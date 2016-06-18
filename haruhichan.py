@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 '''
     Downloads titles from haruhichan.com automatically from the RSS feed
 '''
