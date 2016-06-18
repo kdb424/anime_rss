@@ -1,17 +1,17 @@
 #!/usr/bin/env python
-'''
+"""
     Downloads titles from haruhichan.com automatically from the RSS feed
-'''
+"""
 
 from os.path import expanduser
 import urllib.request
 import argparse
-import feedparser
+import feedparser as fp
 import yaml
 
 RSS_URL = "http://haruhichan.com/feed/feed.php?mode=rss"
 
-FEED = feedparser.parse(RSS_URL)
+FEED = fp.parse(RSS_URL)
 
 HOME = expanduser("~")
 CONFIG_FILE = HOME + "/.config/haruhichan.cfg"
@@ -33,9 +33,9 @@ if ARGS['download'] is not None:
 
 
 def get_conf():
-    '''
+    """
         Returns a list of titles from config file
-    '''
+    """
     with open(CONFIG_FILE, 'r') as config:
         cfg = yaml.load(config)
         return cfg
