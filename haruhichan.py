@@ -18,7 +18,7 @@ CONFIG_FILE = HOME + "/.config/haruhichan.cfg"
 DOWNLOAD_DIR = HOME + "/Downloads/"
 
 
-PARSER = argparse.ArgumentParser(description='Does stuff')
+PARSER = argparse.ArgumentParser(description='Downloads files from Haruhichan RSS')
 PARSER.add_argument('-c', '--config', help='Configuration file location',
                     required=False)
 PARSER.add_argument('-d', '--download', help='Download directory',
