@@ -45,15 +45,22 @@ YAML_CFG = get_conf()
 TITLE = YAML_CFG["title"]
 QUALITY = YAML_CFG["quality"]
 SUBBER = YAML_CFG["subber"]
-for post in FEED.entries:
-    for title in TITLE:
-        if str(title) in post.title:
-            for sub in SUBBER:
-                if str(sub) in post.title:
-                    for qul in QUALITY:
-                        if str(qul) in post.title:
-                            urllib.request.urlretrieve(post.link,
-                                                       DOWNLOAD_DIR +
-                                                       post.title +
-                                                       ".torrent")
-                            print(post.title + ": " + post.link)
+
+def check_title(x):
+    title = x.get('title')
+
+    if not title:
+        return False
+
+    return all([
+        any(str(ti) in title for ti in TITLE),
+        any(str(sub) in title for sub in SUBBER),
+        any(str(qul) in title for qul in QUALITY)
+    ])
+
+for post in [x for x in FEED.entries if check_title(x)]:
+    urllib.request.urlretrieve(post.link,
+                                DOWNLOAD_DIR +
+                                post.title +
+                                ".torrent")
+    print(post.title + ": " + post.link)
