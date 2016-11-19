@@ -64,3 +64,31 @@ for post in [x for x in FEED.entries if check_title(x)]:
                                 post.title +
                                 ".torrent")
     print(post.title + ": " + post.link)
+
+
+if ARGS['rss'] is None:
+    TITLE = YAML_CFG["title"]
+    for post in FEED.entries:
+        for title in TITLE:
+            if str(title) in post.title:
+                for sub in SUBBER:
+                    if str(sub) in post.title:
+                        for qul in QUALITY:
+                            if str(qul) in post.title:
+                                urllib.request.urlretrieve(post.link,
+                                                           DOWNLOAD_DIR +
+                                                           post.title +
+                                                           ".torrent")
+                                print(post.title + ": " + post.link)
+else:
+    print(DOWNLOAD_DIR)
+    for post in FEED.entries:
+        for sub in SUBBER:
+            if str(sub) in post.title:
+                for qul in QUALITY:
+                    if str(qul) in post.title:
+                        urllib.request.urlretrieve(post.link,
+                                                   DOWNLOAD_DIR +
+                                                   post.title +
+                                                   ".torrent")
+                        print(post.title + ": " + post.link)
