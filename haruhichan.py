@@ -11,17 +11,19 @@ import yaml
 
 RSS_URL = "http://haruhichan.com/feed/feed.php?mode=rss"
 
-FEED = fp.parse(RSS_URL)
+
 
 HOME = expanduser("~")
 CONFIG_FILE = HOME + "/.config/haruhichan.cfg"
-DOWNLOAD_DIR = HOME + "/Downloads/"
+DOWNLOAD_DIR = HOME + "/torrents/"
 
 
 PARSER = argparse.ArgumentParser(description='Downloads files from Haruhichan RSS')
 PARSER.add_argument('-c', '--config', help='Configuration file location',
                     required=False)
 PARSER.add_argument('-d', '--download', help='Download directory',
+                    required=False)
+PARSER.add_argument('-r', '--rss', help='RSS Feed',
                     required=False)
 ARGS = vars(PARSER.parse_args())
 
@@ -31,6 +33,10 @@ if ARGS['config'] is not None:
 if ARGS['download'] is not None:
     DOWNLOAD_DIR = ARGS['download']
 
+if ARGS['rss'] is not None:
+    RSS_URL = ARGS['rss']
+
+FEED = fp.parse(RSS_URL)
 
 def get_conf():
     """
@@ -52,6 +58,13 @@ def check_title(x):
     if not title:
         return False
 
+    if ARGS['rss'] is not None:
+        return all([
+            any(str(sub) in title for sub in SUBBER),
+            any(str(qul) in title for qul in QUALITY)
+        ])
+
+
     return all([
         any(str(ti) in title for ti in TITLE),
         any(str(sub) in title for sub in SUBBER),
@@ -65,7 +78,7 @@ for post in [x for x in FEED.entries if check_title(x)]:
                                 ".torrent")
     print(post.title + ": " + post.link)
 
-
+'''
 if ARGS['rss'] is None:
     TITLE = YAML_CFG["title"]
     for post in FEED.entries:
@@ -81,7 +94,6 @@ if ARGS['rss'] is None:
                                                            ".torrent")
                                 print(post.title + ": " + post.link)
 else:
-    print(DOWNLOAD_DIR)
     for post in FEED.entries:
         for sub in SUBBER:
             if str(sub) in post.title:
@@ -92,3 +104,4 @@ else:
                                                    post.title +
                                                    ".torrent")
                         print(post.title + ": " + post.link)
+'''
